@@ -21,15 +21,29 @@ class IndexDB:
 
     def add_index(self,index_name):
         self.cursor.execute('''
-            INSERT INTO cardapio (nome)
+            INSERT INTO indexes (nome)
             VALUES (?)
-        ''', (index_name))
+        ''', (index_name,))
         self.conn.commit()
 
 
-    def get_index_by_name(self,index_name):
+    def get_index_by_name(self, index_name):
         self.cursor.execute('''
-            SELECT * FROM index WHERE nome = ?    
-''', (index_name))
+            SELECT * FROM indexes WHERE nome = ?    
+''', (index_name,))
         items = self.cursor.fetchall()
         return items
+    
+    def is_index_stored(self,index_name):
+        result = self.get_index_by_name(index_name=index_name)
+        if result:
+            return True
+        
+        return False
+    
+    def get_all_indexes(self):
+        self.cursor.execute("SELECT * FROM indexes")
+        results = self.cursor.fetchall()
+        return results
+
+
