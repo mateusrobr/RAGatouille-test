@@ -9,7 +9,8 @@ class IndexDB:
         self.cursor.execute('''
     CREATE TABLE IF NOT EXISTS indexes (
         id INTEGER PRIMARY KEY,
-        nome TEXT
+        nome TEXT,
+        descricao TEXT
     )
 ''')
         
@@ -19,11 +20,11 @@ class IndexDB:
         self.conn.close()
 
 
-    def add_index(self,index_name):
+    def add_index(self,index_name,desc):
         self.cursor.execute('''
-            INSERT INTO indexes (nome)
-            VALUES (?)
-        ''', (index_name,))
+            INSERT INTO indexes (nome, descricao)
+            VALUES (?,?)
+        ''', (index_name,desc))
         self.conn.commit()
 
 
