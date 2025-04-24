@@ -13,6 +13,7 @@ class Rag:
         self.RAG = RAGPretrainedModel.from_pretrained(model)
         #self.index_db = IndexDB()
         self.is_index_selected_var = False
+        self.model = model
 
     def index(self, index_name,docs_path):
         doc_text = self._load_documents(docs_path)
@@ -21,14 +22,13 @@ class Rag:
                        index_name=index_name,
                        max_document_length=200,
                        split_documents=True)
-        print("TESTE_INDEX")
         
     def get_results(self,query):
-        return self.RAG.search(query=query)
+        results = self.RAG.search(query=query)
+        return results
 
 
     def _load_documents(self,doc_path):
-        print("Teste")
         reader = SimpleDirectoryReader(input_files=doc_path)
         documents = reader.load_data()
         list_texts = [document.text for document in documents]
@@ -36,7 +36,7 @@ class Rag:
 
     def select_existing_index(self,path_to_index):
         try:
-            self.RAG.from_index(path_to_index)
+            self.RAG = RAGPretrainedModel.from_pretrained(self.model).from_index(path_to_index)
             self.is_index_selected_var = True
         except Exception as e:
             print(f"Erro ao selecionar index: {e}")

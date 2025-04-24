@@ -43,7 +43,7 @@ class Chatbot:
         results = self.rag.get_results(question)
         context = ' '.join([result['content'] for result in results])
         response = invoke_llm(model_name="qwen:4b",context=context, question=question)
-        print(response)
+        print(f"Resposta do bot: {response}")
 
     def create_new_index(self):
         index_name = input("Qual o nome do index? ")
